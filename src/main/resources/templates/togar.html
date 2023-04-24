@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Togar</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" th:href="@{/index}">TOGAR</a>
+    <a class="nav-link" th:text="'Logged in as: ' + ${session.username}" style="color: black !important;">Logged in as:
+        {username}</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:action="@{/logout}" method="GET" th:href="@{/logout}">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h2 class="text-center mb-5">These Are Your Images</h2>
+            <div class="slider">
+                <div class="slider-inner">
+                    <div th:each="image : ${images}" class="slide">
+                        <img th:src="${image.first}" th:alt="Image" th:attr="data-content-type=${image.second}"/>
+                    </div>
+                </div>
+                <div class="slider-prev">&#10094;</div>
+                <div class="slider-next">&#10095;</div>
+            </div>
+            <p class="mt-5">Below you can upload image files (.jpg and .png)</p>
+            <div class="upload">
+                <form th:action="@{/upload}" th:object="${fileForm}" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="username" th:value="${Username}"/>
+                    <div class="form-group">
+                        <input type="file" name="imageFile" class="form-control-file"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+
+                <div th:if="${fileError}" class="error-message mt-3">
+                    <p th:text="${fileError}"></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="/scripts/image-gallery.js"></script>
+</body>
+</html>
